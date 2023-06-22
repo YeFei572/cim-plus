@@ -1,0 +1,50 @@
+server:
+  port: 8085
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${env.MYSQL_HOST}:3306/cim-plus?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: ${env.MYSQL_PASS}
+    druid:
+      stat-view-servlet:
+        enabled: false
+        loginUsername: admin
+        loginPassword: 123456
+        initial-size: 5
+        min-idle: 5
+        maxActive: 20
+        maxWait: 60000
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: SELECT 1 FROM DUAL
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        filters: stat,slf4j
+        connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+  redis:
+    host: ${env.MYSQL_HOST}
+    port: 3927
+    database: 2
+    password: ${env.MYSQL_PASS}
+    jedis:
+      pool:
+        max-active: 100
+        max-idle: 100
+        max-wait: 1000
+        min-idle: 10
+curator:
+  retry-count: 5
+  elapsed-time-ms: 5000
+  # 集群的话用“，”隔开
+  connect-string: 127.0.0.1:2181
+  session-timeout-ms: 6000
+  connection-timeout-ms: 5000
+app:
+  zk-root: 127.0.0.1
+  zk-switch: true
+  cim-server-port: 11211
+  route-url: htt://localhost:8083/

@@ -1,0 +1,12 @@
+/*
+syntax = "proto3";
+//生成文件所在包名
+option java_package = "cn.v2ss.cn.server.api.protocol";
+//生成的java文件名
+option java_outer_classname = "ResponseProto";
+
+message BaseResponseProto {
+  string resMsg = 1;
+  int64 responseId = 2;
+  int32 type = 3;
+}*/

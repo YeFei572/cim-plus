@@ -1,0 +1,50 @@
+server:
+  port: 8083
+# zookeeper配置
+route:
+  zk-root: /route
+  zk-address: localhost:2181
+  zk-connect-timeout: 15000
+  route-way: cn.v2ss.common.route.algorithm.hash.ConsistentHashHandle
+  consistent-hash-way: cn.v2ss.common.route.algorithm.hash.TreeMapConsistentHash
+# zookeeper连接框架配置
+curator:
+  retry-count: 5
+  elapsed-time-ms: 5000
+  # 集群的话用“，”隔开
+  connect-string: 127.0.0.1:2181
+  session-timeout-ms: 6000
+  connection-timeout-ms: 5000
+# Spring官方配置（相关）
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${env.MYSQL_HOST}:3306/cim-plus?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: ${env.MYSQL_PASS}
+  redis:
+    host: ${env.MYSQL_HOST}
+    port: 3927
+    database: 2
+    password: ${env.MYSQL_PASS}
+    jedis:
+      pool:
+        max-active: 100
+        max-idle: 100
+        max-wait: 1000
+        min-idle: 10
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: cim-plus
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: true
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
