@@ -3,6 +3,7 @@ package cn.v2ss.route.service.impl;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.v2ss.cim.route.api.vo.res.CIMServerResVO;
 import cn.v2ss.cn.server.entity.User;
 import cn.v2ss.common.constant.Constants;
 import cn.v2ss.common.entity.req.LoginReq;
@@ -53,5 +54,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setUpdateTime(user.getCreateTime());
         this.save(user);
         return Boolean.TRUE;
+    }
+
+    @Override
+    public CIMServerResVO loadRouteRelatedByUserId(Long userId) {
+        return null;
     }
 }
