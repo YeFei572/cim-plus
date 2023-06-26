@@ -1,5 +1,6 @@
 package cn.v2ss.common.entity.res;
 
+import cn.v2ss.common.entity.RouteInfo;
 import lombok.Data;
 
 @Data
@@ -15,4 +16,6 @@ public class UserInfoRes {
     private Integer gender;
 
     private String remark;
+
+    private RouteInfo routeInfo;
 }

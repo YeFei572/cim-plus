@@ -1,4 +1,4 @@
-package cn.v2ss.route.properties;
+package cn.v2ss.route.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

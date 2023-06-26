@@ -1,6 +1,7 @@
 package cn.v2ss.common.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  * @Date: 2022-06-22 21:20
  **/
 @Data
+@Builder
 @AllArgsConstructor
 public final class RouteInfo {
 

@@ -1,5 +1,7 @@
 package cn.v2ss.route.kit;
 
+import cn.v2ss.common.entity.RouteInfo;
+import cn.v2ss.common.exception.CIMException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
@@ -63,6 +65,14 @@ public class ZooKit {
      */
     public List<String> getAllNodes() {
         return new ArrayList<>(cache.values());
+    }
+
+    public void checkServerAvailable(RouteInfo info) {
+        Boolean reachAble = NetAddressIsReachable.checkAddressReachable(info.getIp(), info.getServerPort(), 1000);
+        if (!reachAble) {
+            log.error("节点：{}，端口：{}当前不可用", info.getIp(), info.getServerPort());
+            throw new CIMException("节点获取失败，请联系管理员查看！");
+        }
     }
 
 }

@@ -6,19 +6,35 @@ import cn.hutool.core.date.DateUtil;
 import cn.v2ss.cim.route.api.vo.res.CIMServerResVO;
 import cn.v2ss.cn.server.entity.User;
 import cn.v2ss.common.constant.Constants;
+import cn.v2ss.common.entity.RouteInfo;
 import cn.v2ss.common.entity.req.LoginReq;
 import cn.v2ss.common.entity.res.UserInfoRes;
 import cn.v2ss.common.exception.CIMException;
+import cn.v2ss.common.kit.RedisUtils;
+import cn.v2ss.common.route.algorithm.RouteHandle;
+import cn.v2ss.common.util.RouteInfoUtils;
+import cn.v2ss.route.kit.ZooKit;
 import cn.v2ss.route.mapper.UserMapper;
 import cn.v2ss.route.service.UserService;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
+import static cn.v2ss.route.constant.Constant.ROUTE_PREFIX;
+
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
+    private final ZooKit zooKit;
+
+    private final RouteHandle routeHandle;
 
     @Override
     public UserInfoRes login(LoginReq req) {
@@ -34,6 +50,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UserInfoRes result = new UserInfoRes();
         BeanUtil.copyProperties(exist, result);
         result.setToken(token);
+        // 如果登陆成功，就保存用户信息到缓存中去
+        List<String> allNodes = zooKit.getAllNodes();
+        String server = routeHandle.routeServer(allNodes, String.valueOf(exist.getId()));
+        log.info("当前登录用户为：{}, 路由服务器为：{}", exist.getNickname(), server);
+        RouteInfo routeInfo = RouteInfoUtils.parse(server);
+        zooKit.checkServerAvailable(routeInfo);
+        // 保存路由信息
+        RedisUtils.setCacheObject(ROUTE_PREFIX + exist.getId(), server);
+        result.setRouteInfo(routeInfo);
         return result;
     }
 
@@ -56,8 +81,4 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return Boolean.TRUE;
     }
 
-    @Override
-    public CIMServerResVO loadRouteRelatedByUserId(Long userId) {
-        return null;
-    }
 }

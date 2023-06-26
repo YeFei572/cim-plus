@@ -1,5 +1,6 @@
-package cn.v2ss.route.properties;
+package cn.v2ss.route.config;
 
+import cn.v2ss.route.config.properties.CuratorProperties;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.RetryNTimes;
