@@ -5,7 +5,7 @@ import okhttp3.*;
 
 import java.io.IOException;
 
-public class HttpClient {
+public final class HttpClient {
 
     private static final MediaType mediaType = MediaType.parse("application/json");
 

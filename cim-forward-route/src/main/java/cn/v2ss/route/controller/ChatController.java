@@ -1,7 +1,8 @@
 package cn.v2ss.route.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import cn.v2ss.cim.route.api.vo.req.ChatDto;
+import cn.v2ss.cn.server.ServerApi;
+import cn.v2ss.common.entity.req.ChatDto;
 import cn.v2ss.common.constant.Constants;
 import cn.v2ss.common.entity.RouteInfo;
 import cn.v2ss.common.entity.req.P2PReq;
@@ -9,8 +10,12 @@ import cn.v2ss.common.entity.res.BaseResponse;
 import cn.v2ss.common.exception.CIMException;
 import cn.v2ss.common.kit.RedisUtils;
 import cn.v2ss.common.kit.ResultUtils;
+import cn.v2ss.common.proxy.ProxyManager;
 import cn.v2ss.common.util.RouteInfoUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,11 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static cn.v2ss.route.constant.Constant.ROUTE_PREFIX;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/chat")
 public class ChatController {
 
+    private final OkHttpClient client;
 
     @PostMapping("/p2p")
     public BaseResponse<?> p2pRouter(@Validated @RequestBody P2PReq req) {
@@ -43,6 +50,16 @@ public class ChatController {
     private void pushMsg(String server, Long sendUserId, ChatDto dto) {
         RouteInfo routeInfo = RouteInfoUtils.parse(server);
         String url = Constants.HTTP + routeInfo.getIp() + Constants.COLON + routeInfo.getHttpPort();
-//        new ProxyManager<>()
+        ServerApi instance = new ProxyManager<>(ServerApi.class, url, client).getInstance();
+        Response response = null;
+        try {
+            response = (Response) instance.sendSmg(dto);
+        } catch (Exception e) {
+            log.error("发送失败：{}", e.getMessage());
+        } finally {
+            if (null != response && null != response.body()) {
+                response.body().close();
+            }
+        }
     }
 }

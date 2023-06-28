@@ -1,4 +1,4 @@
-package cn.v2ss.cim.route.api.vo.req;
+package cn.v2ss.common.entity.req;
 
 import cn.v2ss.common.entity.req.BaseRequest;
 import lombok.AllArgsConstructor;
