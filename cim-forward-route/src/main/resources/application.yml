@@ -70,3 +70,6 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
+  is-read-body: false
+  is-read-cookie: false
+  is-read-header: true

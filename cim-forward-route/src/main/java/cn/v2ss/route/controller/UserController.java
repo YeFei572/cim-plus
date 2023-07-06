@@ -34,4 +34,5 @@ public class UserController {
     public BaseResponse<Boolean> register(@RequestBody LoginReq req) {
         return ResultUtils.ok(userService.register(req), "注册成功！");
     }
+
 }
