@@ -36,4 +36,6 @@ public class Constants {
     public static final String LIMIT_ONE = "LIMIT 1";
     public static final String HTTP = "http://";
     public static final String COLON = ":";
+
+    public static final String USER_TOKEN_KEY = "cim-plus:login:token:";
 }
