@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 17591
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -46,5 +46,5 @@ curator:
 app:
   zk-root: 127.0.0.1
   zk-switch: true
-  cim-server-port: 11211
+  cim-server-port: 17592
   route-url: htt://localhost:8083/
