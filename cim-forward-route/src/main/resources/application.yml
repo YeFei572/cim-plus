@@ -19,14 +19,14 @@ curator:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${env.MYSQL_HOST}:3306/cim-plus?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useSSL=false
+    url: jdbc:mysql://${MYSQL_HOST}:3306/cim-plus?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
-    password: ${env.MYSQL_PASS}
+    password: ${MYSQL_PASS}
   redis:
-    host: ${env.MYSQL_HOST}
+    host: ${MYSQL_HOST}
     port: 3927
     database: 2
-    password: ${env.MYSQL_PASS}
+    password: ${MYSQL_PASS}
     jedis:
       pool:
         max-active: 100
