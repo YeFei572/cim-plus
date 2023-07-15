@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 17593
 # zookeeper配置
 route:
   zk-root: /route
