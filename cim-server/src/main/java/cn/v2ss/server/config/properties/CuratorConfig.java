@@ -1,4 +1,4 @@
-package cn.v2ss.server.properties;
+package cn.v2ss.server.config.properties;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;

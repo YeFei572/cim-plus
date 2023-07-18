@@ -1,6 +1,6 @@
 package cn.v2ss.server;
 
-import cn.v2ss.server.properties.AppProperties;
+import cn.v2ss.server.config.properties.AppProperties;
 import cn.v2ss.server.zk.RegistryZK;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +32,12 @@ public class CimServerApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        // 获得本机IP
-        String address = InetAddress.getLocalHost().getHostAddress();
-        log.info("当前节点ip：{}", address);
-        Thread thread = new Thread(new RegistryZK(address, properties.getCimServerPort(), httpPort));
+    public void run(String... args) {
+        // 获得本机的内网ip和公网ip
+        String intranetIp = properties.getNodeIntranetIp();
+        String extranetIp = properties.getNodeExtranetIp();
+        log.info("当前节点ip内网：{}，公网：{}", intranetIp, extranetIp);
+        Thread thread = new Thread(new RegistryZK(extranetIp, properties.getCimServerPort(), httpPort));
         thread.setName("register-zk");
         thread.start();
     }
