@@ -33,7 +33,6 @@ spring:
         max-idle: 100
         max-wait: 1000
         min-idle: 10
-
 redisson:
   # redis key前缀
   keyPrefix:
@@ -73,3 +72,8 @@ sa-token:
   is-read-body: false
   is-read-cookie: false
   is-read-header: true
+logging:
+  level:
+    cn.v2ss.route: debug
+    org.springframework: warn
+  config: classpath:logback.xml

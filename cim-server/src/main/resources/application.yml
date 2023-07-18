@@ -48,3 +48,8 @@ app:
   zk-switch: true
   cim-server-port: 17592
   route-url: htt://localhost:8083/
+logging:
+  level:
+    cn.v2ss.cn.v2ss.server: debug
+    org.springframework: warn
+  config: classpath:logback.xml
