@@ -26,7 +26,7 @@
         <okhttp3.version>4.11.0</okhttp3.version>
         <protobuf-java.version>3.23.2</protobuf-java.version>
         <grpc-all.version>1.55.1</grpc-all.version>
-        <tlog.version>1.5.0</tlog.version>
+        <tlog.version>1.5.1</tlog.version>
         <knife4j.version>3.0.3</knife4j.version>
         <swagger-annotations.version>1.5.22</swagger-annotations.version>
         <redisson.version>3.22.0</redisson.version>
@@ -189,20 +189,20 @@
                 <groupId>com.yomahub</groupId>
                 <artifactId>tlog-web-spring-boot-starter</artifactId>
                 <version>${tlog.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>log4j</artifactId>
-                        <groupId>log4j</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>dom4j</artifactId>
-                        <groupId>dom4j</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>commons-beanutils</artifactId>
-                        <groupId>commons-beanutils</groupId>
-                    </exclusion>
-                </exclusions>
+<!--                <exclusions>-->
+<!--                    <exclusion>-->
+<!--                        <artifactId>log4j</artifactId>-->
+<!--                        <groupId>log4j</groupId>-->
+<!--                    </exclusion>-->
+<!--                    <exclusion>-->
+<!--                        <artifactId>dom4j</artifactId>-->
+<!--                        <groupId>dom4j</groupId>-->
+<!--                    </exclusion>-->
+<!--                    <exclusion>-->
+<!--                        <artifactId>commons-beanutils</artifactId>-->
+<!--                        <groupId>commons-beanutils</groupId>-->
+<!--                    </exclusion>-->
+<!--                </exclusions>-->
             </dependency>
 
             <dependency>

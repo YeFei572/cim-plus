@@ -21,6 +21,10 @@
             <groupId>cn.v2ss</groupId>
             <artifactId>cim-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.yomahub</groupId>
+            <artifactId>tlog-web-spring-boot-starter</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>cn.v2ss</groupId>

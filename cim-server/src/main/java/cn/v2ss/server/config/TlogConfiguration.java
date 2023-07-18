@@ -1,12 +1,11 @@
 package cn.v2ss.server.config;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
-public class TlogDemoApplication {
+import com.yomahub.tlog.springboot.TLogWebAutoConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Configuration;
 
-    public static void main(String[] args) {
-        SpringApplication.run(TlogDemoApplication.class, args);
-    }
+@Configuration
+@EnableAutoConfiguration(exclude = TLogWebAutoConfiguration.class)
+class TlogConfiguration {
 
 }
