@@ -44,8 +44,8 @@ curator:
   session-timeout-ms: 6000
   connection-timeout-ms: 5000
 app:
-  node-intranet-ip: ${INTRANET-IP:127.0.0.1}
-  node-extranet-ip: ${EXTRANET-IP:127.0.0.1}
+  node-intranet-ip: ${INTRANET_IP:127.0.0.1}
+  node-extranet-ip: ${EXTRANET_IP:127.0.0.1}
   zk-root: 127.0.0.1
   zk-switch: true
   cim-server-port: 17592
