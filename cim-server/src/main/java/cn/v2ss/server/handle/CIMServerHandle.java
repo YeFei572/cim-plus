@@ -3,6 +3,7 @@ package cn.v2ss.server.handle;
 import cn.v2ss.cn.server.api.protocol.RequestProto;
 import cn.v2ss.common.constant.Constants;
 import cn.v2ss.common.enums.MsgTypeEnum;
+import cn.v2ss.common.enums.StatusEnum;
 import cn.v2ss.common.exception.CIMException;
 import cn.v2ss.common.kit.RedisUtils;
 import cn.v2ss.server.util.UserUtils;
@@ -59,9 +60,8 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<RequestProto.Ba
             if (Objects.isNull(currentUserId) || StringUtils.isBlank(String.valueOf(currentUserId)) || !currentUserId.toString().equals(String.valueOf(msg.getRequestId()))) {
                 // 组装失败消息
                 RequestProto.BaseRequestProto req = RequestProto.BaseRequestProto.newBuilder()
-                        .setRequestId(1L)
-                        .setReqMsg("登录失败，token无效！")
-                        .setType(MsgTypeEnum.LOGIN.getCode()).build();
+                        .setRequestId(1L).setReqMsg("登录失败，token无效！").setType(MsgTypeEnum.LOGIN.getCode())
+                        .setReceiveId((Long) currentUserId).setMsgCode(StatusEnum.ACCOUNT_NOT_MATCH.code()).build();
                 ctx.channel().writeAndFlush(req);
             } else {
                 UserUtils.put(msg.getRequestId(), (NioSocketChannel) ctx.channel());
