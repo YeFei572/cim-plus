@@ -22,6 +22,12 @@ public class User {
 
     private String remark;
 
+    /**
+     * 用户状态
+     * {@link cn.v2ss.common.enums.UserEnum.userState}
+     */
+    private Integer state;
+
     private Long createTime;
 
     private Long updateTime;
