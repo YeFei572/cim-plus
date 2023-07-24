@@ -83,6 +83,17 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
      */
     @Override
     public Boolean addNewFriend(FriendshipRequestDTO dto) {
+        Long currentUserId = StpUtil.getLoginIdAsLong();
+        if (dto.getUserId().equals(currentUserId)) {
+            throw new CIMException("不能添加自己为好友！");
+        }
+        // 如果已经是好友也不允许添加
+        Friend existFriend = this.getOne(Wrappers.<Friend>lambdaQuery().select(Friend::getId)
+                .eq(Friend::getUserId, currentUserId).eq(Friend::getFriendId, dto.getUserId())
+                .or(w -> w.eq(Friend::getFriendId, currentUserId).eq(Friend::getUserId, dto.getUserId())), Boolean.TRUE);
+        if (Objects.nonNull(existFriend)) {
+            throw new CIMException("已经是好友了，不能重复添加！");
+        }
         // 检查目标用户的信息是否存在且正常
         User exist = userService.getById(dto.getUserId());
         Optional.ofNullable(exist).orElseThrow(() -> new CIMException("该用户不存在！"));
@@ -94,7 +105,7 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
         request.setType(FriendEnum.FriendshipRequestEnum.PERSON.getCode());
         request.setUserId(dto.getUserId());
         request.setRemark(dto.getRemark());
-        request.setCreateTime(DateUtil.date().getTime());
+        request.setCreateTime(DateUtil.currentSeconds());
         request.setUpdateTime(request.getCreateTime());
         friendshipRequestService.save(request);
         return Boolean.TRUE;

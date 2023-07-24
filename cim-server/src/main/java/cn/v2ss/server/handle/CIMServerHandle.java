@@ -4,7 +4,6 @@ import cn.v2ss.cn.server.api.protocol.RequestProto;
 import cn.v2ss.common.constant.Constants;
 import cn.v2ss.common.enums.MsgTypeEnum;
 import cn.v2ss.common.enums.StatusEnum;
-import cn.v2ss.common.exception.CIMException;
 import cn.v2ss.common.kit.RedisUtils;
 import cn.v2ss.server.util.UserUtils;
 import io.netty.channel.ChannelHandler;
@@ -57,14 +56,19 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<RequestProto.Ba
         if (MsgTypeEnum.LOGIN.getCode().equals(type)) {
             // 检查用户的token是否合法
             Object currentUserId = RedisUtils.getCacheObject(Constants.USER_TOKEN_KEY + msg.getReqMsg());
-            if (Objects.isNull(currentUserId) || StringUtils.isBlank(String.valueOf(currentUserId)) || !currentUserId.toString().equals(String.valueOf(msg.getRequestId()))) {
+            if (Objects.isNull(currentUserId) || StringUtils.isBlank(String.valueOf(currentUserId)) || !currentUserId.toString().equals(String.valueOf(msg.getFromId()))) {
                 // 组装失败消息
                 RequestProto.BaseRequestProto req = RequestProto.BaseRequestProto.newBuilder()
                         .setRequestId(1L).setReqMsg("登录失败，token无效！").setType(MsgTypeEnum.LOGIN.getCode())
-                        .setReceiveId((Long) currentUserId).setMsgCode(StatusEnum.ACCOUNT_NOT_MATCH.code()).build();
+                        .setMsgCode(StatusEnum.ACCOUNT_NOT_MATCH.code()).build();
                 ctx.channel().writeAndFlush(req);
             } else {
                 UserUtils.put(msg.getRequestId(), (NioSocketChannel) ctx.channel());
+                // 组装登陆成功消息
+                RequestProto.BaseRequestProto req = RequestProto.BaseRequestProto.newBuilder()
+                        .setRequestId(1L).setReqMsg("登陆成功！").setType(MsgTypeEnum.LOGIN.getCode())
+                        .setReceiveId(Long.parseLong(currentUserId.toString())).setMsgCode(StatusEnum.SUCCESS.code()).build();
+                ctx.channel().writeAndFlush(req);
                 log.info("登录成功！");
             }
         }
