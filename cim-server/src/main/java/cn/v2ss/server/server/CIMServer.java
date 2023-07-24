@@ -1,6 +1,6 @@
 package cn.v2ss.server.server;
 
-import cn.v2ss.server.properties.AppProperties;
+import cn.v2ss.server.config.properties.AppProperties;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -27,8 +27,8 @@ public class CIMServer {
 
     private final AppProperties appProperties;
 
-    private EventLoopGroup boss = new NioEventLoopGroup();
-    private EventLoopGroup work = new NioEventLoopGroup();
+    private final EventLoopGroup boss = new NioEventLoopGroup();
+    private final EventLoopGroup work = new NioEventLoopGroup();
 
     /**
      * 默认启动Netty服务

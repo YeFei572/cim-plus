@@ -1,18 +1,20 @@
-package cn.v2ss.server.properties;
+package cn.v2ss.server.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
- * @Author: YeFei
- * @Description:
- * @Date: 2022-09-06 22:34
- **/
+ * 服务启动配置类
+ */
 @Data
-@Configuration
+@Component
 @ConfigurationProperties("app")
 public class AppProperties {
+    // 内网ip
+    private String nodeIntranetIp;
+    // 节点公网ip
+    private String nodeExtranetIp;
 
     private String zkRoot;
 

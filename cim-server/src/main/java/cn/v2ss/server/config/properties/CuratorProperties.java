@@ -1,4 +1,4 @@
-package cn.v2ss.server.properties;
+package cn.v2ss.server.config.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
