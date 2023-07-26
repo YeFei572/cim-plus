@@ -39,7 +39,7 @@ public class ZooKit {
         nodeCache.start();
         nodeCache.listenable().addListener((type, oldData, data) -> {
             // 如果是初始化根节点，直接跳过监听
-            if (!Objects.equals(data.getPath(), zkRoot)) {
+            if (Objects.nonNull(data) && !Objects.equals(data.getPath(), zkRoot)) {
                 switch (type) {
                     case NODE_CREATED:
                         String addAddress = data.getPath().substring(data.getPath().indexOf("-") + 1);

@@ -15,6 +15,8 @@ public class UserInfoRes {
 
     private Integer gender;
 
+    private String avatar;
+
     private String remark;
 
     private RouteInfo routeInfo;
