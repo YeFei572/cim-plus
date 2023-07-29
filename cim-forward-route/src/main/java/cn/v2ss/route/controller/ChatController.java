@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static cn.v2ss.route.constant.Constant.ROUTE_PREFIX;
 
+/**
+ * 发送消息的相关接口
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +36,12 @@ public class ChatController {
 
     private final OkHttpClient client;
 
+    /**
+     * 单聊
+     *
+     * @param req 单聊参数
+     * @return 是否成功
+     */
     @PostMapping("/p2p")
     public BaseResponse<?> p2pRouter(@Validated @RequestBody P2PReq req) {
         // 开始获取用户的路由信息

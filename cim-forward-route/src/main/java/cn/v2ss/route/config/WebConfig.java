@@ -28,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
                     SaRouter.match(pathHandler.getPaths()).check(StpUtil::checkLogin);
                 }))
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login");
+                .excludePathPatterns("/login", "/v3/api-docs/**");
     }
 
     /**

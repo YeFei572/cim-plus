@@ -31,7 +31,8 @@ public class FriendController {
     /**
      * 通过手机号查询一个陌生人信息
      *
-     * @return 陌生人信息
+     * @param phone 指定陌生人的手机号
+     * @return 陌生人的相关信息
      */
     @GetMapping("/queryNewFriend/{phone}")
     public BaseResponse<FriendVO> queryNewFriend(@PathVariable("phone") String phone) {
