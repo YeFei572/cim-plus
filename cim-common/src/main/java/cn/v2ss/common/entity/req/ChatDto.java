@@ -1,6 +1,5 @@
 package cn.v2ss.common.entity.req;
 
-import cn.v2ss.common.entity.req.BaseRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
