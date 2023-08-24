@@ -3,6 +3,7 @@ package cn.v2ss.common.proxy;
 import cn.v2ss.common.enums.StatusEnum;
 import cn.v2ss.common.exception.CIMException;
 import cn.v2ss.common.util.HttpClient;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -42,10 +43,17 @@ public final class ProxyManager<T> {
                 Class<?> parameterType = method.getParameterTypes()[0];
                 for (Field filed : parameterType.getDeclaredFields()) {
                     filed.setAccessible(Boolean.TRUE);
-                    jsonObject.addProperty(filed.getName(), (String) filed.get(para));
+                    Object fieldValue = filed.get(para);
+                    if (fieldValue instanceof Integer || fieldValue instanceof Long) {
+                        jsonObject.addProperty(filed.getName(), (Number) fieldValue);
+                    } else if (fieldValue instanceof  String) {
+                        jsonObject.addProperty(filed.getName(), fieldValue.toString());
+                    } else if (fieldValue instanceof  Boolean) {
+                        jsonObject.addProperty(filed.getName(), (Boolean) fieldValue);
+                    }
                 }
             }
-            return HttpClient.call(client, jsonObject.getAsString(), serverUrl);
+            return HttpClient.call(client, jsonObject.toString(), serverUrl);
         }
     }
 }

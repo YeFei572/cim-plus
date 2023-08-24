@@ -11,5 +11,5 @@ public interface ServerApi {
      * @return 结果
      * @throws Exception 发送异常
      */
-    Object sendSmg(ChatDto dto) throws Exception;
+    Object sendMsg(ChatDto dto) throws Exception;
 }

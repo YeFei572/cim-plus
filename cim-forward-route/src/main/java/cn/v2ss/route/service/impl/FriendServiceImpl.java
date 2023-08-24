@@ -45,9 +45,11 @@ public class FriendServiceImpl extends ServiceImpl<FriendMapper, Friend> impleme
         // 别人加我的
         Map<Long, Friend> otherMap = friendList.stream().filter(i -> i.getFriendId().equals(currentUserId))
                 .collect(Collectors.toMap(Friend::getUserId, i -> i));
-        Set<Long> friendIds = mineMap.keySet();
-        friendIds.addAll(otherMap.keySet());
-        List<User> users = userService.listByIds(friendIds);
+        // 此处必须要使用一个新的hashset，不能直接合并，因为addAll()是Collection接口中定义的，map.keySet()返回的是一个Set，并非一个Collection
+        Set<Long> ids = new HashSet<>();
+        ids.addAll(otherMap.keySet());
+        ids.addAll(mineMap.keySet());
+        List<User> users = userService.listByIds(ids);
         List<FriendVO> result = new ArrayList<>();
         users.forEach(item -> {
             // 处理备注信息

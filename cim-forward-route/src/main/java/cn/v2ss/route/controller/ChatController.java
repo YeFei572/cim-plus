@@ -7,6 +7,8 @@ import cn.v2ss.common.constant.Constants;
 import cn.v2ss.common.entity.RouteInfo;
 import cn.v2ss.common.entity.req.P2PReq;
 import cn.v2ss.common.entity.res.BaseResponse;
+import cn.v2ss.common.enums.FriendEnum;
+import cn.v2ss.common.enums.MsgTypeEnum;
 import cn.v2ss.common.exception.CIMException;
 import cn.v2ss.common.kit.RedisUtils;
 import cn.v2ss.common.kit.ResultUtils;
@@ -34,26 +36,32 @@ public class ChatController {
     private final OkHttpClient client;
 
     @PostMapping("/p2p")
-    public BaseResponse<?> p2pRouter(@Validated @RequestBody P2PReq req) {
+    public BaseResponse<Boolean> p2pRouter(@Validated @RequestBody P2PReq req) {
         // 开始获取用户的路由信息
         String receiveServer = RedisUtils.getCacheObject(ROUTE_PREFIX + req.getReceiveUserId());
         if (StringUtils.isBlank(receiveServer)) {
             throw new CIMException("对方不在线！");
         }
         // 准备参数进行发送
-        ChatDto chatDto = new ChatDto(req.getReceiveUserId(), req.getMsg());
-        long userId = StpUtil.getLoginIdAsLong();
-        return ResultUtils.ok(null);
+        ChatDto chatDto = new ChatDto(
+                StpUtil.getLoginIdAsLong(),
+                req.getReceiveUserId(),
+                FriendEnum.FriendshipRequestEnum.PERSON.getCode(),
+                req.getMsg(),
+                MsgTypeEnum.TXT.getCode()
+        );
+        pushMsg(receiveServer, chatDto);
+        return ResultUtils.ok(Boolean.TRUE);
     }
 
 
-    private void pushMsg(String server, Long sendUserId, ChatDto dto) {
+    private void pushMsg(String server, ChatDto dto) {
         RouteInfo routeInfo = RouteInfoUtils.parse(server);
         String url = Constants.HTTP + routeInfo.getIp() + Constants.COLON + routeInfo.getHttpPort();
         ServerApi instance = new ProxyManager<>(ServerApi.class, url, client).getInstance();
         Response response = null;
         try {
-            response = (Response) instance.sendSmg(dto);
+            response = (Response) instance.sendMsg(dto);
         } catch (Exception e) {
             log.error("发送失败：{}", e.getMessage());
         } finally {
