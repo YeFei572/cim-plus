@@ -2,9 +2,9 @@ package cn.v2ss.route.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.v2ss.cn.server.ServerApi;
-import cn.v2ss.common.entity.req.ChatDto;
 import cn.v2ss.common.constant.Constants;
 import cn.v2ss.common.entity.RouteInfo;
+import cn.v2ss.common.entity.req.ChatDto;
 import cn.v2ss.common.entity.req.P2PReq;
 import cn.v2ss.common.entity.res.BaseResponse;
 import cn.v2ss.common.exception.CIMException;
@@ -43,7 +43,7 @@ public class ChatController {
      * @return 是否成功
      */
     @PostMapping("/p2p")
-    public BaseResponse<?> p2pRouter(@Validated @RequestBody P2PReq req) {
+    public BaseResponse<Boolean> p2pRouter(@Validated @RequestBody P2PReq req) {
         // 开始获取用户的路由信息
         String receiveServer = RedisUtils.getCacheObject(ROUTE_PREFIX + req.getReceiveUserId());
         if (StringUtils.isBlank(receiveServer)) {
@@ -52,7 +52,8 @@ public class ChatController {
         // 准备参数进行发送
         ChatDto chatDto = new ChatDto(req.getReceiveUserId(), req.getMsg());
         long userId = StpUtil.getLoginIdAsLong();
-        return ResultUtils.ok(null);
+        pushMsg(receiveServer, userId, chatDto);
+        return ResultUtils.ok(Boolean.TRUE, "发送成功！");
     }
 
 
