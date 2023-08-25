@@ -60,7 +60,7 @@ sa-token:
   # token有效期，单位s 默认30天, -1代表永不过期
   timeout: 2592000
   # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
-  activity-timeout: -1
+  active-timeout: -1
   # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
   is-concurrent: true
   # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
@@ -77,3 +77,25 @@ logging:
     cn.v2ss.route: debug
     org.springframework: warn
   config: classpath:logback.xml
+# 开始配置OpenAPI3文档相关配置信息
+springdoc:
+  api-docs:
+    # 是否开启文档功能
+    enabled: true
+  info:
+    title: 'cim-plus统一文档'
+    description: 'openAPI3风格文档支持'
+    version: '1.0'
+    contact:
+      name: bigbug
+      email: keppelfei@gmail.com
+      url: https://www.v2ss.cn
+  components:
+    security-schemes:
+      apiKey:
+        type: apikey
+        in: header
+        name: cim-plus
+  group-configs:
+    - group: 通用模块
+      packages-to-scan: cn.v2ss.route.controller

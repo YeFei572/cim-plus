@@ -5,19 +5,30 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @Author: YeFei
- * @Description:
- * @Date: 2022-06-22 21:26
- **/
+ * 通用封装类
+ *
+ * @param <T> 泛型
+ */
 @Data
 public class BaseResponse<T> implements Serializable {
 
+    /**
+     * 状态码
+     */
     private Integer code;
 
+    /**
+     * 消息内容
+     */
     private String message;
 
+    /**
+     * 请求编号
+     */
     private String reqNo;
-
+    /**
+     * 具体的data
+     */
     private T data;
 
 }

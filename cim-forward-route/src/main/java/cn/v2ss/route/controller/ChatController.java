@@ -2,9 +2,9 @@ package cn.v2ss.route.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.v2ss.cn.server.ServerApi;
-import cn.v2ss.common.entity.req.ChatDto;
 import cn.v2ss.common.constant.Constants;
 import cn.v2ss.common.entity.RouteInfo;
+import cn.v2ss.common.entity.req.ChatDto;
 import cn.v2ss.common.entity.req.P2PReq;
 import cn.v2ss.common.entity.res.BaseResponse;
 import cn.v2ss.common.enums.FriendEnum;
@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static cn.v2ss.route.constant.Constant.ROUTE_PREFIX;
 
+/**
+ * 发送消息的相关接口
+ */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -35,6 +38,12 @@ public class ChatController {
 
     private final OkHttpClient client;
 
+    /**
+     * 单聊
+     *
+     * @param req 单聊参数
+     * @return 是否成功
+     */
     @PostMapping("/p2p")
     public BaseResponse<Boolean> p2pRouter(@Validated @RequestBody P2PReq req) {
         // 开始获取用户的路由信息
