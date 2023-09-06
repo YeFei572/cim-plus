@@ -1,12 +1,18 @@
 package cn.v2ss.server.server;
 
+import cn.v2ss.cn.server.api.protocol.RequestProto;
+import cn.v2ss.common.entity.req.ChatDto;
+import cn.v2ss.common.exception.CIMException;
 import cn.v2ss.server.config.properties.AppProperties;
+import cn.v2ss.server.util.UserUtils;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,6 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.net.InetSocketAddress;
+import java.util.Objects;
 
 /**
  * @Author: YeFei
@@ -32,6 +39,7 @@ public class CIMServer {
 
     /**
      * 默认启动Netty服务
+     *
      * @throws InterruptedException
      */
     @PostConstruct
@@ -56,4 +64,18 @@ public class CIMServer {
         log.info("IM服务优雅停止！");
     }
 
+    public void sendMsg(ChatDto dto) {
+        NioSocketChannel channel = UserUtils.get(dto.getTargetId());
+        if (Objects.isNull(channel)) {
+            throw new CIMException("对方不在线!");
+        }
+        RequestProto.BaseRequestProto protocol = RequestProto.BaseRequestProto.newBuilder()
+                .setChatType(dto.getChatType())
+                .setFromId(dto.getFromUserId())
+                .setReceiveId(dto.getTargetId())
+                .setReqMsg(dto.getMsg())
+                .setType(dto.getMsgType()).build();
+        ChannelFuture future = channel.writeAndFlush(protocol);
+        future.addListener((ChannelFutureListener) channelFuture -> log.info("server push msg: [{}]", dto));
+    }
 }

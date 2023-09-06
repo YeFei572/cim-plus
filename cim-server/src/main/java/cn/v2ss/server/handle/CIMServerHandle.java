@@ -63,7 +63,7 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<RequestProto.Ba
                         .setMsgCode(StatusEnum.ACCOUNT_NOT_MATCH.code()).build();
                 ctx.channel().writeAndFlush(req);
             } else {
-                UserUtils.put(msg.getRequestId(), (NioSocketChannel) ctx.channel());
+                UserUtils.put(msg.getFromId(), (NioSocketChannel) ctx.channel());
                 // 组装登陆成功消息
                 RequestProto.BaseRequestProto req = RequestProto.BaseRequestProto.newBuilder()
                         .setRequestId(1L).setReqMsg("登陆成功！").setType(MsgTypeEnum.LOGIN.getCode())
