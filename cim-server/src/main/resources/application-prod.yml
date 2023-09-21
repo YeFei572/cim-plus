@@ -27,7 +27,7 @@ spring:
   redis:
     host: ${MYSQL_HOST}
     port: 3927
-    database: 2
+    database: 5
     password: ${MYSQL_PASS}
     jedis:
       pool:
