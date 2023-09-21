@@ -1,0 +1,83 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:3306/cim-plus?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: ${MYSQL_PASS}
+  redis:
+    host: ${MYSQL_HOST}
+    port: 3927
+    database: 2
+    password: ${MYSQL_PASS}
+    jedis:
+      pool:
+        max-active: 100
+        max-idle: 100
+        max-wait: 1000
+        min-idle: 10
+redisson:
+  # redis key前缀
+  keyPrefix:
+  # 线程池数量
+  threads: 4
+  # Netty线程池数量
+  nettyThreads: 8
+  # 单节点配置
+  singleServerConfig:
+    # 客户端名称
+    clientName: cim-plus-client
+    # 最小空闲连接数
+    connectionMinimumIdleSize: 8
+    # 连接池大小
+    connectionPoolSize: 32
+    # 连接空闲超时，单位：毫秒
+    idleConnectionTimeout: 10000
+    # 命令等待超时，单位：毫秒
+    timeout: 3000
+    # 发布和订阅连接池大小
+    subscriptionConnectionPoolSize: 50
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: cim-plus
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 2592000
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  active-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: true
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: true
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true
+  is-read-body: false
+  is-read-cookie: false
+  is-read-header: true
+logging:
+  level:
+    cn.v2ss.route: debug
+    org.springframework: warn
+  config: classpath:logback.xml
+# 开始配置OpenAPI3文档相关配置信息
+springdoc:
+  api-docs:
+    # 是否开启文档功能
+    enabled: true
+  info:
+    title: 'cim-plus统一文档'
+    description: 'openAPI3风格文档支持'
+    version: '1.0'
+    contact:
+      name: bigbug
+      email: keppelfei@gmail.com
+      url: https://www.v2ss.cn
+  components:
+    security-schemes:
+      apiKey:
+        type: apikey
+        in: header
+        name: cim-plus
+  group-configs:
+    - group: 通用模块
+      packages-to-scan: cn.v2ss.route.controller
