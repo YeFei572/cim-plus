@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum MsgTypeEnum {
-
+    HEARTBEAT(0, "心跳检测"),
     LOGIN(1, "登录"),
     TXT(2, "文本"),
     PIC(3, "图片"),

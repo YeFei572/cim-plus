@@ -71,6 +71,28 @@ public class CIMServerHandle extends SimpleChannelInboundHandler<RequestProto.Ba
                 ctx.channel().writeAndFlush(req);
                 log.info("登录成功！");
             }
+        } else if (MsgTypeEnum.HEARTBEAT.getCode().equals(type)) {
+            Object currentUserId = RedisUtils.getCacheObject(Constants.USER_TOKEN_KEY + msg.getReqMsg());
+            if (Objects.isNull(currentUserId) || StringUtils.isBlank(String.valueOf(currentUserId)) || !currentUserId.toString().equals(String.valueOf(msg.getFromId()))) {
+                // 组装失败消息
+                RequestProto.BaseRequestProto req = RequestProto.BaseRequestProto.newBuilder()
+                        .setRequestId(1L).setReqMsg("您的账号异常，请重新登录！").setType(MsgTypeEnum.LOGIN.getCode())
+                        .setMsgCode(StatusEnum.ACCOUNT_NOT_MATCH.code()).build();
+                ctx.channel().writeAndFlush(req);
+            } else {
+                NioSocketChannel channel = UserUtils.get(msg.getFromId());
+                if (Objects.isNull(channel) || channel.isShutdown()) {
+                    log.error("用户：{}已经离线", msg.getFromId());
+                } else {
+                    // 组装登陆成功消息
+                    RequestProto.BaseRequestProto req = RequestProto.BaseRequestProto.newBuilder()
+                            .setRequestId(1L).setReqMsg("PONG").setType(MsgTypeEnum.HEARTBEAT.getCode())
+                            .setReceiveId(Long.parseLong(currentUserId.toString())).setMsgCode(StatusEnum.SUCCESS.code()).build();
+                    ctx.channel().writeAndFlush(req);
+                }
+            }
+        } else {
+            log.error("错误的消息类型: ${}", type);
         }
         String reqMsg = msg.getReqMsg();
         long requestId = msg.getRequestId();
