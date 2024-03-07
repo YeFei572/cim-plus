@@ -1,8 +1,6 @@
 package cn.v2ss.route.handler;
 
 import cn.dev33.satoken.exception.NotLoginException;
-import cn.hutool.core.net.Ipv4Util;
-import cn.hutool.extra.spring.SpringUtil;
 import cn.v2ss.common.entity.res.BaseResponse;
 import cn.v2ss.common.exception.CIMException;
 import cn.v2ss.common.kit.ResultUtils;
@@ -25,7 +23,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotLoginException.class)
-    public BaseResponse<?> handleNotLoginException(NotLoginException ex, HttpServletRequest req) {
+    public BaseResponse<?> handleNotLoginException(HttpServletRequest req) {
         String ipAddress;
         if (req.getHeader("X-Forwarded-For") != null) {
             ipAddress = req.getHeader("X-Forwarded-For");
